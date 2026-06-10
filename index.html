@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NetScanner Pro</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- Header bar -->
+  <header id="header">
+    <div id="header-left">
+      <span class="header-icon">☠</span>
+      <span id="app-title">NETSCANNER PRO</span>
+    </div>
+    <div id="local-ip-display">
+      <span class="label">LOCAL</span>
+      <span id="local-ip">---.---.---.---</span>
+    </div>
+    <div id="header-right">
+      <span id="clock">00:00:00</span>
+    </div>
+  </header>
+
+  <!-- Main layout: sidebar + center stage -->
+  <main id="main-layout">
+
+    <!-- Left sidebar: host list -->
+    <aside id="host-list-panel">
+      <div class="panel-title">LOCAL TARGETS</div>
+      <div id="scan-controls">
+        <input id="target-input" type="text" placeholder="192.168.1.0/24" spellcheck="false"/>
+        <button id="scan-btn" class="btn-primary" onclick="startScan()">
+          <span id="scan-btn-text">▶ SCAN</span>
+        </button>
+      </div>
+      <div id="host-list"></div>
+    </aside>
+
+    <!-- Center: radial menu + target info -->
+    <section id="center-stage">
+
+      <!-- Radial network visualiser -->
+      <div id="radar-container">
+        <canvas id="radar-canvas"></canvas>
+        <div id="radial-menu">
+
+          <!-- Center: selected host display -->
+          <div id="center-info">
+            <div id="center-icon">🖥</div>
+            <div id="center-status">
+              <span class="dot green"></span><span id="st-active">Selecteer host</span>
+            </div>
+            <div id="center-ports"><span class="dot yellow"></span><span id="st-ports">---</span></div>
+            <div id="center-vuln"><span class="dot gray"></span><span id="st-vuln">---</span></div>
+          </div>
+
+          <!-- Radial action buttons -->
+          <div class="radial-btn" id="btn-scan"    style="--angle:270deg" onclick="action('scan')">
+            <div class="rbtn-icon">🔭</div>
+            <div class="rbtn-label">Scan</div>
+          </div>
+          <div class="radial-btn" id="btn-spy"     style="--angle:180deg" onclick="action('spy')">
+            <div class="rbtn-icon">👁</div>
+            <div class="rbtn-label">Spy</div>
+          </div>
+          <div class="radial-btn" id="btn-connect" style="--angle:0deg"   onclick="action('connect')">
+            <div class="rbtn-icon">🔌</div>
+            <div class="rbtn-label">Connect</div>
+          </div>
+          <div class="radial-btn" id="btn-mitm"    style="--angle:135deg" onclick="action('mitm')">
+            <div class="rbtn-icon">🕵</div>
+            <div class="rbtn-label">M.I.T.M.</div>
+          </div>
+          <div class="radial-btn" id="btn-attack"  style="--angle:45deg"  onclick="action('attack')">
+            <div class="rbtn-icon">⚡</div>
+            <div class="rbtn-label">Attack</div>
+          </div>
+
+        </div><!-- /radial-menu -->
+      </div><!-- /radar-container -->
+
+    </section>
+
+    <!-- Right panel: output log -->
+    <aside id="output-panel">
+      <div class="panel-title">OUTPUT</div>
+      <div id="output-log"></div>
+      <button class="btn-ghost" onclick="clearLog()">✕ Clear</button>
+    </aside>
+
+  </main>
+
+  <!-- Modal overlay for action results -->
+  <div id="modal-overlay" onclick="closeModal()"></div>
+  <div id="modal">
+    <div id="modal-header">
+      <span id="modal-title">RESULT</span>
+      <button class="btn-ghost" onclick="closeModal()">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
