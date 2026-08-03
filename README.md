@@ -36,11 +36,11 @@ Download via https://nmap.org/download.html
 python app.py
 ```
 
-De server start op **http://localhost:5000**
+De server start op **http://localhost:5008**
 
 ### 4. Browser openen
 
-Ga naar → **http://localhost:5000**
+Ga naar → **http://localhost:5008**
 
 ---
 
