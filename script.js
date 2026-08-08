@@ -1,5 +1,5 @@
 /* ─── State ─────────────────────────────────────────────────────────────── */
-const API = "http://localhost:5008/api";
+const API = "https://appscanner.abelsoftware123.com";
 let selectedHost = null;
 let hosts = [];
 let radarAngle = 0;
