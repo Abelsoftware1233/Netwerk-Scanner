@@ -1,5 +1,5 @@
 /* ─── State ─────────────────────────────────────────────────────────────── */
-const API = "https://appscanner.abelsoftware123.com";
+const API = "/api";
 let selectedHost = null;
 let hosts = [];
 let radarAngle = 0;
