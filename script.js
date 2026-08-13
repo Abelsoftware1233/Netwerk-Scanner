@@ -1,5 +1,5 @@
 /* ─── State ─────────────────────────────────────────────────────────────── */
-const API = "http://87.106.41.140:5008/api";
+const API = "window.location.protocol + "//" + window.location.host + "/api";
 let selectedHost = null;
 let hosts = [];
 let radarAngle = 0;
