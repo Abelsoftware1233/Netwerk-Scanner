@@ -1,5 +1,5 @@
 /* ─── State ─────────────────────────────────────────────────────────────── */
-const API = "window.location.protocol + "//" + window.location.host + "/api";
+const API = window.location.protocol + "//" + window.location.host + "/api";
 let selectedHost = null;
 let hosts = [];
 let radarAngle = 0;
