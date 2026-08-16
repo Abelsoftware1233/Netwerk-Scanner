@@ -1,5 +1,5 @@
 /* ─── State ─────────────────────────────────────────────────────────────── */
-const API = "http:87.106.41.140:5008/api";
+const API = "http://87.106.41.140:5008/api";
 let selectedHost = null;
 let hosts = [];
 let radarAngle = 0;
@@ -26,13 +26,20 @@ function startClock() {
 async function fetchLocalIP() {
   try {
     const r = await fetch(`${API}/local-ip`);
-    const d = await r.json();
+    const text = await r.text();
+    
+    if (text.trim().startsWith("<")) {
+        throw new Error("Server gaf HTML terug in plaats van JSON");
+    }
+    
+    const d = JSON.parse(text);
     document.getElementById("local-ip").textContent = d.ip;
     document.getElementById("target-input").value = d.network;
     log("ok", `Lokaal IP: ${d.ip}  Netwerk: ${d.network}`);
-  } catch {
+  } catch (err) {
     document.getElementById("local-ip").textContent = "offline";
     log("warn", "Backend niet bereikbaar – start app.py");
+    console.error("Fout:", err.message);
   }
 }
 
@@ -58,7 +65,13 @@ async function startScan() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ target })
     });
-    const d = await r.json();
+    
+    const text = await r.text();
+    if (text.trim().startsWith("<")) {
+        throw new Error("API gaf HTML terug in plaats van JSON.");
+    }
+    
+    const d = JSON.parse(text);
     hosts = d.hosts || [];
     renderHostList(hosts);
     log("ok", `Scan klaar: ${hosts.length} hosts gevonden`);
@@ -66,7 +79,7 @@ async function startScan() {
   } catch (e) {
     log("error", "Scan mislukt: " + e.message);
     document.getElementById("host-list").innerHTML =
-      `<div class="empty-state">❌ Backend niet bereikbaar.<br>Start: python app.py</div>`;
+      `<div class="empty-state">❌ Fout bij scannen.<br>Kijk in de log/console.</div>`;
   } finally {
     btn.classList.remove("loading");
     btnText.textContent = "▶ SCAN";
@@ -147,7 +160,13 @@ async function doPortScan() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ip })
     });
-    const d = await r.json();
+    
+    const text = await r.text();
+    if (text.trim().startsWith("<")) {
+        throw new Error("Server gaf HTML terug.");
+    }
+    
+    const d = JSON.parse(text);
 
     // update center
     document.getElementById("st-ports").textContent = `${d.port_count} open poorten`;
@@ -237,7 +256,13 @@ async function doMITM() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ip })
     });
-    const d = await r.json();
+    
+    const text = await r.text();
+    if (text.trim().startsWith("<")) {
+        throw new Error("Server gaf HTML terug.");
+    }
+    
+    const d = JSON.parse(text);
 
     const arpHtml = d.arp_table.length ? d.arp_table.map(e => `
       <div class="arp-row">
@@ -275,7 +300,13 @@ async function doAttack() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ip })
     });
-    const d = await r.json();
+    
+    const text = await r.text();
+    if (text.trim().startsWith("<")) {
+        throw new Error("Server gaf HTML terug.");
+    }
+    
+    const d = JSON.parse(text);
 
     const riskColor = { Low: "var(--green)", Medium: "var(--amber)", High: "var(--red)" }[d.risk] || "var(--text)";
     const html = `
